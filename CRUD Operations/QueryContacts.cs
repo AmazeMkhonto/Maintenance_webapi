@@ -10,7 +10,7 @@ namespace Contacts
 
 
             using (NpgsqlCommand command = new NpgsqlCommand(
-                "SELECT ContactID, Email, CellNumber, AlternativeNumber FROM Contacts ",
+                "SELECT ContactID, Email, CellNumber, AlternativeNumber, is_deleted FROM Contacts ",
                 connection))
             {
 
@@ -23,7 +23,9 @@ namespace Contacts
                             ContactID = reader.GetInt32(0),
                             Email = reader.GetString(1),
                             CellNumber = reader.GetString(2),
-                            AlternativeNumber = reader.GetString(3)
+                            AlternativeNumber = reader.GetString(3),
+                            is_deleted = reader.GetBoolean(4)
+
 
                         });
                     }
@@ -43,7 +45,7 @@ namespace Contacts
 
 
             using (NpgsqlCommand command = new NpgsqlCommand(
-                "SELECT ContactID, Email, CellNumber, AlternativeNumber FROM Contacts WHERE ContactID = @ContactID",
+                "SELECT ContactID, Email, CellNumber, AlternativeNumber, is_deleted FROM Contacts WHERE ContactID = @ContactID",
                 connection))
             {
                 command.Parameters.AddWithValue("ContactID", ContactID);
@@ -57,7 +59,8 @@ namespace Contacts
                             ContactID = reader.GetInt32(0),
                             Email = reader.GetString(1),
                             CellNumber = reader.GetString(2),
-                            AlternativeNumber = reader.GetString(3)
+                            AlternativeNumber = reader.GetString(3),
+                            is_deleted= reader.GetBoolean(4)
 
                         });
                     }
@@ -116,6 +119,34 @@ namespace Contacts
             finally { connection.Close(); }
 
         }
+
+
+
+        public static int SoftDeleteContact(NpgsqlConnection connection, int ContactID)
+        {
+            int n = 0;
+
+            try
+            {
+                using (NpgsqlCommand command = new NpgsqlCommand(
+                    "UPDATE Contacts set is_deleted=cast(1 as bit) where ContactID=@ContactID",
+                    connection))
+                {
+                    command.Parameters.AddWithValue("ContactID", ContactID);
+                    n = command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+            catch (NpgsqlException ex)
+            {
+                Console.WriteLine("Could not delete contact: " + ex.Message);
+            }
+
+            return n;
+        }
+
+
 
 
 

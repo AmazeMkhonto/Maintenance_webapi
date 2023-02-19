@@ -11,7 +11,7 @@ namespace Requests
 
 
             using (NpgsqlCommand command = new NpgsqlCommand(
-                "SELECT RequestID, TenantID, Description, RequestDate FROM MaintenanceRequests ",
+                "SELECT RequestID, TenantID, Description, RequestDate, is_deleted FROM MaintenanceRequests ",
                 connection))
             {
 
@@ -24,7 +24,8 @@ namespace Requests
                             RequestID = reader.GetInt32(0),
                             TenantID = reader.GetInt32(1),
                             Description = reader.GetString(2),
-                            RequestDate = reader.GetDateTime(3)
+                            RequestDate = reader.GetDateTime(3),
+                            is_deleted= reader.GetBoolean(4)
 
                         });
                     }
@@ -43,7 +44,7 @@ namespace Requests
 
 
             using (NpgsqlCommand command = new NpgsqlCommand(
-                "SELECT RequestID, TenantID, Description, RequestDate FROM MaintenanceRequests  WHERE RequestID = @RequestID",
+                "SELECT RequestID, TenantID, Description, RequestDate, is_deleted FROM MaintenanceRequests  WHERE RequestID = @RequestID",
                 connection))
             {
                 command.Parameters.AddWithValue("RequestID", RequestID);
@@ -57,7 +58,8 @@ namespace Requests
                             RequestID = reader.GetInt32(0),
                             TenantID = reader.GetInt32(1),
                             Description = reader.GetString(2),
-                            RequestDate = reader.GetDateTime(3)
+                            RequestDate = reader.GetDateTime(3),
+                            is_deleted= reader.GetBoolean(4)
 
                         });
                     }
@@ -113,6 +115,32 @@ namespace Requests
             connection.Close();
 
             return requests.ToArray();
+        }
+
+
+
+        public static int SoftDeleteRequest(NpgsqlConnection connection, int RequestID)
+        {
+            int n = 0;
+
+            try
+            {
+                using (NpgsqlCommand command = new NpgsqlCommand(
+                    "UPDATE MaintenanceRequests set is_deleted=cast(1 as bit) where RequestID=@RequestID",
+                    connection))
+                {
+                    command.Parameters.AddWithValue("RequestID", RequestID);
+                    n = command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+            catch (NpgsqlException ex)
+            {
+                Console.WriteLine("Could not delete request: " + ex.Message);
+            }
+
+            return n;
         }
 
 

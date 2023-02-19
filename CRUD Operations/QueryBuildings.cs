@@ -93,6 +93,7 @@ namespace Buildings
                     int buildingID = (int)command.ExecuteScalar();
 
                     Building building = new Building();
+
                     building.BuildingID = buildingID;
                     building.BuildingName = BuildingName;
                     building.Address = Address;
@@ -136,6 +137,8 @@ namespace Buildings
                 Console.WriteLine(ex);
                 return false;
             }
+
+
             finally { connection.Close(); }
 
         }
@@ -167,25 +170,6 @@ namespace Buildings
             return n;
         }
 
-
-
-        //public static bool UpdateBuilding(NpgsqlConnection connection, int BuildingID, string buildingName)
-        //{
-        //    using (NpgsqlCommand command = new NpgsqlCommand(
-        //        "UPDATE Buildings SET buildingName = @buildingName WHERE BuildingID = @BuildingID",
-        //        connection))
-        //    {
-        //        command.Parameters.AddWithValue("buildingName", buildingName);
-
-        //        command.Parameters.AddWithValue("BuildingID", BuildingID);
-
-        //        int affectedRows = command.ExecuteNonQuery();
-
-        //        connection.Close();
-
-        //        return affectedRows > 0;
-        //    }
-        //}
 
 
         public static bool UpdateBuilding(NpgsqlConnection connection, int buildingID, string buildingName = null, string address = null, bool? isDeleted = null)

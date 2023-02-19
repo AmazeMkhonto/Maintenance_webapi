@@ -63,6 +63,31 @@ namespace TodoApi.Controllers
             }
         }
 
+
+        [HttpPut("SoftDelete/{ContactId}", Name = "SoftDeleteContactById")]
+        public IActionResult SoftDelete(int ContactId)
+        {
+            try
+            {
+                int result = QueryContacts.SoftDeleteContact(con, ContactId);
+                if (result > 0)
+                {
+                    return Ok($"{result} recored affected\nContact with id {ContactId} is deleted");
+                }
+                else
+                {
+                    return BadRequest("Could not delete Contact");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Could not delete building: " + ex.Message);
+            }
+        }
+
+
+
+
     }
 
 

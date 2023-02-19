@@ -6,6 +6,7 @@ using Npgsql;
 using Jobs;
 using TodoApi.DBConnection;
 using Technicians;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 
 namespace TodoApi.Controllers
 {
@@ -64,22 +65,26 @@ namespace TodoApi.Controllers
 
 
 
-        //[HttpPut(Name = "UpdateRequest")]
-        //public IActionResult Update()
-        //{
-        //    return View();
-        //}
-
-
-
-
-
-
-
-
-
-
-
+        [HttpPut("SoftDelete/{RequestId}", Name = "SoftDeleteRequestById")]
+        public IActionResult SoftDelete(int RequestId)
+        {
+            try
+            {
+                int result = QueryMaintenanceRequests.SoftDeleteRequest(con, RequestId);
+                if (result > 0)
+                {
+                    return Ok($"{result} recored affected\nRequest with id {RequestId} is deleted");
+                }
+                else
+                {
+                    return BadRequest("Could not delete request");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Could not delete request: " + ex.Message);
+            }
+        }
 
 
     }

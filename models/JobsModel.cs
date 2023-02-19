@@ -5,4 +5,5 @@
     public int TechnicianID { get; set; }
     public int RequestID { get; set; }
     public DateTime CompletionDate { get; set; }
+    public bool is_deleted { get; set; }
 }

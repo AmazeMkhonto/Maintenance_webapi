@@ -1,6 +1,7 @@
 ﻿using Buildings;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
+using Requests;
 using Technicians;
 using TodoApi.DBConnection;
 
@@ -55,6 +56,29 @@ namespace TodoApi.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Could not delete Technician: "+ex );
+            }
+        }
+
+
+
+        [HttpPut("SoftDelete/{TechnicianId}", Name = "SoftDeleteTechnicianById")]
+        public IActionResult SoftDelete(int TechnicianId)
+        {
+            try
+            {
+                int result = QueryMaintenanceTechnicians.SoftDeleteTechnician(con, TechnicianId);
+                if (result > 0)
+                {
+                    return Ok($"{result} recored affected\nTechnician with id {TechnicianId} is deleted");
+                }
+                else
+                {
+                    return BadRequest("Could not delete technician");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Could not delete technician: " + ex.Message);
             }
         }
 

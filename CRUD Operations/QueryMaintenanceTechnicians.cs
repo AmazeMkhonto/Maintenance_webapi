@@ -26,7 +26,8 @@ namespace Technicians
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2),
                             Speciality = reader.GetString(3),
-                            ContactID= reader.GetInt32(4)
+                            ContactID= reader.GetInt32(4),
+                            is_deleted=reader.GetBoolean(5)
 
                         });
                     }
@@ -61,7 +62,8 @@ namespace Technicians
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2),
                             Speciality = reader.GetString(3),
-                            ContactID = reader.GetInt32(4)
+                            ContactID = reader.GetInt32(4),
+                            is_deleted=reader.GetBoolean(5)
 
                         });
                     }
@@ -118,6 +120,31 @@ namespace Technicians
             connection.Close();
 
             return techs.ToArray();
+        }
+
+
+        public static int SoftDeleteTechnician(NpgsqlConnection connection, int TechnicianID)
+        {
+            int n = 0;
+
+            try
+            {
+                using (NpgsqlCommand command = new NpgsqlCommand(
+                    "UPDATE MaintenanceTechnicians set is_deleted=cast(1 as bit) where TechnicianID=@TechnicianID",
+                    connection))
+                {
+                    command.Parameters.AddWithValue("TechnicianID", TechnicianID);
+                    n = command.ExecuteNonQuery();
+                }
+
+                connection.Close();
+            }
+            catch (NpgsqlException ex)
+            {
+                Console.WriteLine("Could not delete technician: " + ex.Message);
+            }
+
+            return n;
         }
 
 
