@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\BBD\\C#\\Maintenance_webapi\\TodoApi.csproj": {}
+    "C:\\Users\\bbdnet2872\\Music\\Maintenance_webapi\\TodoApi.csproj": {}
   },
   "projects": {
-    "C:\\BBD\\C#\\Maintenance_webapi\\TodoApi.csproj": {
+    "C:\\Users\\bbdnet2872\\Music\\Maintenance_webapi\\TodoApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\BBD\\C#\\Maintenance_webapi\\TodoApi.csproj",
+        "projectUniqueName": "C:\\Users\\bbdnet2872\\Music\\Maintenance_webapi\\TodoApi.csproj",
         "projectName": "TodoApi",
-        "projectPath": "C:\\BBD\\C#\\Maintenance_webapi\\TodoApi.csproj",
+        "projectPath": "C:\\Users\\bbdnet2872\\Music\\Maintenance_webapi\\TodoApi.csproj",
         "packagesPath": "C:\\Users\\bbdnet2872\\.nuget\\packages\\",
-        "outputPath": "C:\\BBD\\C#\\Maintenance_webapi\\obj\\",
+        "outputPath": "C:\\Users\\bbdnet2872\\Music\\Maintenance_webapi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bbdnet2872\\AppData\\Roaming\\NuGet\\NuGet.Config",
